@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="globals.css" />
+    <link rel="stylesheet" href="styleguide.css" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="passport-screen">
+      <div class="div">
+        <div class="overlap">
+          <div class="overlap-group">
+            <img class="background" src="https://c.animaapp.com/KjNd2Nsc/img/background.png" />
+            <div class="milkybar-logo"></div>
+            <div class="passport">
+              <div class="overlap-2">
+                <img class="my-passport" src="https://c.animaapp.com/KjNd2Nsc/img/my-passport@2x.png" />
+                <div class="rectangle"></div>
+                <div class="details-passport">
+                  <div class="overlap-3">
+                    <p class="i-m-ready-to">I’M READY TO DISCOVER THE WORLD !</p>
+                    <div class="profile-photo" onclick="handleEdit()">
+                      <div class="fallback-img">
+                        <div class="group-wrapper">
+                          <div class="group">
+                            <div class="overlap-group-2">
+                              <div class="ellipse"></div>
+                              <img class="img" src="https://c.animaapp.com/KjNd2Nsc/img/ellipse-7.svg" />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="details">
+                      <div class="overlap-4">
+                        <div class="rectangle-2"></div>
+                        <img class="group-2" src="https://c.animaapp.com/KjNd2Nsc/img/group@2x.png" />
+                      </div>
+                      <div class="text-wrapper">NAME</div>
+                      <div class="text-wrapper-2">Name</div>
+                    </div>
+                    <div class="page-gradient"></div>
+                  </div>
+                </div>
+                <div class="passport-bottom">
+                  <div class="overlap-5">
+                    <div class="rectangle-4"></div>
+                    <div class="map-details-inside">
+                      <div class="overlap-group-3">
+                        <img
+                          id="solid-color-world"
+                          alt="Solid color world"
+                          src="https://generation-sessions.s3.amazonaws.com/23d9ece802f35b86acc77dc522da359d/img/solid-color-world-map-2.svg"
+                        />
+                        <div class="page-gradient-2"></div>
+                        <div class="text-wrapper-3">Continents Explored</div>
+                        <img class="lock-img" src="https://c.animaapp.com/KjNd2Nsc/img/lock-img-1@2x.png" />
+                        <img class="lock-img-2" src="https://c.animaapp.com/KjNd2Nsc/img/lock-img-2@2x.png" />
+                        <img class="lock-img-3" src="https://c.animaapp.com/KjNd2Nsc/img/lock-img-3@2x.png" />
+                        <img class="check-mark" src="https://c.animaapp.com/KjNd2Nsc/img/check-mark-1.svg" />
+                        <img class="check-mark-2" src="https://c.animaapp.com/KjNd2Nsc/img/check-mark-2.svg" />
+                        <img class="check-mark-3" src="https://c.animaapp.com/KjNd2Nsc/img/check-mark-3.svg" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <img class="group-3" src="https://c.animaapp.com/KjNd2Nsc/img/group-18-1@2x.png" />
+          </div>
+          <img class="home-icon" src="https://c.animaapp.com/KjNd2Nsc/img/home-icon.svg" />
+          <img class="sourvenirs" src="https://c.animaapp.com/KjNd2Nsc/img/sourvenirs.svg" />
+        </div>
+
+      </div>
+    </div>
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        // Check if "name" exists in localStorage
+        var storedName = localStorage.getItem("name");
+        if (storedName) {
+          // If it exists, update the content of text-wrapper-2
+          var textWrapper = document.querySelector(".text-wrapper");
+          textWrapper.textContent = storedName;
+        }
+        var capturedImage = localStorage.getItem("capturedImage");
+        if (capturedImage) {
+          // If it exists, convert base64 image and display it in profile-photo div
+          var profilePhotoDiv = document.querySelector(".profile-photo");
+       profilePhotoDiv.innerHTML = ""; // Remove any existing content inside .group-wrapper
+    var img = new Image();
+    img.src = capturedImage;
+    img.classList.add("img", "captured-image");
+    profilePhotoDiv.appendChild(img);
+        }
+      });
+
+      function handleEdit(){
+        window.location.href = "edit.html";
+      }
+    </script>
+  </body>
+  
+</html>

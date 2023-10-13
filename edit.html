@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="globals.css" />
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      #video {
+        width: 100%;
+        height: 100%;
+      }
+      #captured-image {
+        width: 100%;
+        height: 100%;
+        display: none; /* Hide captured image initially */
+      }
+    </style>
+  </head>
+  <body>
+    <div class="edit-page">
+      <div class="div">
+        <div class="overlap" onclick="toggleCapture()" >
+          <div class="shutter-button" >
+            <div class="overlap-group">
+              <img class="vector" src="https://c.animaapp.com/pNsz9Q4x/img/vector-1.svg" />
+              <img class="img" src="https://c.animaapp.com/pNsz9Q4x/img/vector.svg" />
+            </div>
+          </div>
+
+          
+          <video id="video" autoplay></video>
+          <img id="captured-image" src="" alt="Captured Image">
+        </div>
+        <button  onclick="handleClose()">
+            <img class="close-btn" src="https://c.animaapp.com/pNsz9Q4x/img/close-btn.svg" />
+        </button>
+      
+        <input class="div-wrapper" id="nameInput" placeholder="Enter your first name"></input>
+        <button class="buttons" onclick="saveData()">Save</button>
+      </div>
+    </div>
+
+    <script>
+      // Get the video element and canvas for capturing image
+      const video = document.getElementById("video");
+      const capturedImage = document.getElementById("captured-image");
+      const canvas = document.createElement("canvas");
+      const context = canvas.getContext("2d");
+
+      // Get user media
+      navigator.mediaDevices.getUserMedia({ video: true })
+        .then(function (stream) {
+          // Set the video source to the user's camera stream
+          video.srcObject = stream;
+
+          // When video metadata is loaded, set canvas dimensions
+          video.addEventListener("loadedmetadata", function() {
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+          });
+        })
+        .catch(function (err) {
+          console.error("Error accessing the camera: " + err);
+        });
+
+
+
+function toggleCapture() {
+  const vectorImage = document.querySelector(".vector");
+  const imgImage = document.querySelector(".img");
+  
+
+  if (video.style.display !== "none") {
+    // Draw the current frame from the video onto the canvas
+    context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+    // Show the captured image and hide the video
+    capturedImage.src = canvas.toDataURL("image/png");
+    capturedImage.style.display = "block";
+    video.style.display = "none";
+
+    // Change the images
+    vectorImage.src = "https://c.animaapp.com/aEJ4wehH/img/retake-button-1.svg";
+    imgImage.src = "";
+
+    // Stop the video stream
+    const stream = video.srcObject;
+    const tracks = stream.getTracks();
+    tracks.forEach(track => track.stop());
+    video.srcObject = null; // This is important to release the camera resources
+  } else {
+    // Hide the captured image and show the video
+    capturedImage.style.display = "none";
+    video.style.display = "block";
+
+    // Change the images back to the original ones
+    vectorImage.src = "https://c.animaapp.com/pNsz9Q4x/img/vector-1.svg";
+    imgImage.src = "https://c.animaapp.com/pNsz9Q4x/img/vector.svg";
+
+    // Restart the video stream
+    navigator.mediaDevices.getUserMedia({ video: true })
+      .then(function (stream) {
+        // Set the video source to the user's camera stream
+        video.srcObject = stream;
+
+        // When video metadata is loaded, set canvas dimensions
+        video.addEventListener("loadedmetadata", function() {
+          canvas.width = video.videoWidth;
+          canvas.height = video.videoHeight;
+        });
+      })
+      .catch(function (err) {
+        console.error("Error accessing the camera: " + err);
+      });
+  }
+}
+
+function isAlpha(input) {
+        const regex = /^[A-Za-z]+$/;
+        return regex.test(input);
+      }
+
+      function saveData() {
+        const nameInput = document.getElementById("nameInput");
+        const capturedImageData = capturedImage.src;
+
+        // Validate name input
+        const name = nameInput.value.trim();
+        if (!isAlpha(name) || name.length > 30) {
+          alert("Invalid name. Please enter only letters and maximum 30 characters.");
+          return;
+        }
+
+        // Convert captured image to base64
+        const canvas = document.createElement("canvas");
+        const context = canvas.getContext("2d");
+        canvas.width = capturedImage.width;
+        canvas.height = capturedImage.height;
+        context.drawImage(capturedImage, 0, 0, canvas.width, canvas.height);
+        const capturedImageBase64 = canvas.toDataURL("image/png");
+
+        if(name && capturedImageBase64 && canvas.width > 0 && canvas.height > 0)
+        {
+             // Save data to local storage
+            localStorage.setItem("name", name);
+        localStorage.setItem("capturedImage", capturedImageBase64);
+
+        alert("Data saved successfully!");
+        setTimeout(function() {
+        window.location.href = "index.html";
+    }, 3000);
+        }
+       else{
+        alert("Please enter a Name & Photo First");
+       }
+        
+      }
+      function handleClose(){
+        window.location.href = "index.html";
+      }
+
+    </script>
+  </body>
+</html>
