@@ -3,7 +3,8 @@
   <head>
     <link rel="stylesheet" href="globals.css" />
     <link rel="stylesheet" href="styleguide.css" />
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="style.css" /> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"></script>
   </head>
   <body>
     <div class="passport-screen">
@@ -66,39 +67,64 @@
                 </div>
               </div>
             </div>
-            <img class="group-3" src="https://c.animaapp.com/KjNd2Nsc/img/group-18-1@2x.png" />
-          </div>
+            <button id="downloadBtn">
+              <img class="group-3" src="https://c.animaapp.com/KjNd2Nsc/img/group-18-1@2x.png" />
+            </button>
+             </div>
           <img class="home-icon" src="https://c.animaapp.com/KjNd2Nsc/img/home-icon.svg" />
           <img class="sourvenirs" src="https://c.animaapp.com/KjNd2Nsc/img/sourvenirs.svg" />
         </div>
 
       </div>
     </div>
+
     <script>
       document.addEventListener("DOMContentLoaded", function() {
-        // Check if "name" exists in localStorage
         var storedName = localStorage.getItem("name");
         if (storedName) {
-          // If it exists, update the content of text-wrapper-2
           var textWrapper = document.querySelector(".text-wrapper");
           textWrapper.textContent = storedName;
         }
         var capturedImage = localStorage.getItem("capturedImage");
         if (capturedImage) {
-          // If it exists, convert base64 image and display it in profile-photo div
+         
           var profilePhotoDiv = document.querySelector(".profile-photo");
-       profilePhotoDiv.innerHTML = ""; // Remove any existing content inside .group-wrapper
-    var img = new Image();
+       profilePhotoDiv.innerHTML = ""; 
+ var img = new Image();
     img.src = capturedImage;
     img.classList.add("img", "captured-image");
     profilePhotoDiv.appendChild(img);
         }
+  
+        var downloadBtn = document.getElementById("downloadBtn");
+  downloadBtn.addEventListener("click", function() {
+    
+    var element = document.querySelector(".div");
+
+    domtoimage.toPng(element)
+      .then(function (dataUrl) {
+        var downloadLink = document.createElement("a");
+        downloadLink.href = dataUrl;
+        downloadLink.download = "passport.png";
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+      })
+      .catch(function (error) {
+        console.error('Error generating image:', error);
+      });
+  });
+
+   
       });
 
       function handleEdit(){
         window.location.href = "edit.html";
       }
+
+   
     </script>
+    
   </body>
   
 </html>
